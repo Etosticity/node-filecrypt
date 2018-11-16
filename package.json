@@ -1,0 +1,28 @@
+{
+  "name": "filecrypt",
+  "version": "1.0.0",
+  "description": "Encrypt files using RSA Encryption",
+  "main": "main.js",
+  "scripts": {
+    "clean": "rm -rf ./.rsakeys"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Etosticity/node-filecrypt.git"
+  },
+  "keywords": [
+    "encryption",
+    "rsa"
+  ],
+  "author": "Etosticity Rammington (etosticity@gmail.com)",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Etosticity/node-filecrypt/issues"
+  },
+  "homepage": "https://github.com/Etosticity/node-filecrypt#readme",
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "inquirer": "^6.2.0",
+    "node-rsa": "^1.0.1"
+  }
+}
