@@ -1,12 +1,14 @@
 'use strict'
 
-const Inquirer = require('inquirer')
-const Modules = require('./modules')
+const prompter = require('inquirer')
+const modules = require('./modules')
+
+const macros = require('./macros')
 
 async function main() {
   console.clear()
 
-  await Inquirer.prompt([
+  await prompter.prompt([
     {
       type: 'list',
       name: 'selection',
@@ -16,7 +18,7 @@ async function main() {
         'Encrypt A Folder',
         'Decrypt A File',
         'Decrypt A Folder',
-        new Inquirer.Separator(),
+        new prompter.Separator(),
         'Export Current Key Pair',
         'Generate A New Key Pair',
       ]
@@ -24,7 +26,7 @@ async function main() {
   ]).then(result => {
     switch (result.selection) {
       case 'Encrypt A File':
-        Modules.encryptFile()
+        modules.encryptFile()
         break;
       case 'Encrypt A Folder':
         console.log(2)
@@ -39,10 +41,10 @@ async function main() {
         console.log(5)
         break;
       case 'Generate A New Key Pair':
-        Modules.generateKeys()
+        modules.generateKeys()
         break;
       default:
-        console.log("I'm sorry, invalid selection!")
+        macros.errorLog('Invalid Selection! Program Exited.')
         process.exit(1)
     }
   })
