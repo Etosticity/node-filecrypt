@@ -25,7 +25,7 @@ module.exports = {
         name: 'rsakeys',
         message: 'Where Are Your Signing Keys?',
         default: () => {
-          return `${process.cwd()}/.rsakeys/`
+          return `${__dirname}/.rsakeys/`
         },
         validate: value => {
           if (value === null || value === '') return 'Unable to proceed, file location needed!'
@@ -56,6 +56,11 @@ module.exports = {
       fs.writeFileSync(`${results.filename}.enc`, key.encrypt(fileData, 'binary'), 'utf8')
 
       return console.log(macros.infoLog('✔\x20Success! File Has Been Encrypted.'))
+    }).catch(err => {
+      console.clear()
+      console.error(macros.errorLog('[Modules:encryptFile:Error]'), macros.resetLog('An Error Occured. Please see below.'))
+      console.error(err)
+      return process.exit(1)
     })
   },
   encryptFolder: () => {
