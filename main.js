@@ -29,16 +29,16 @@ async function main() {
         modules.encryptFile()
         break;
       case 'Encrypt A Folder':
-        console.log(2)
+        console.log('Feature Coming Soon!')
         break;
       case 'Decrypt A File':
         modules.decryptFile()
         break;
       case 'Decrypt A Folder':
-        console.log(4)
+        console.log('Feature Coming Soon!')
         break;
       case 'Export Current Key Pair':
-        console.log(5)
+        console.log('Feature Coming Soon!')
         break;
       case 'Generate A New Key Pair':
         modules.generateKeys()

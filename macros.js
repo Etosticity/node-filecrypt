@@ -1,12 +1,12 @@
 'use strict';
 
-const Chalk = require('chalk');
+const chalk = require('chalk');
 
 module.exports = {
-  debugLog: string => Chalk.cyan(string),
-  infoLog: string => Chalk.blue(string),
-  warnLog: string => Chalk.red(string),
-  errorLog: string => Chalk.bgRed.black(string),
-  fatalLog: string => Chalk.bgRed.yellow(string),
-  resetLog: string => Chalk.reset(string)
+  debugLog: string => chalk.cyan(string),
+  infoLog: string => chalk.blue(string),
+  warnLog: string => chalk.red(string),
+  errorLog: string => chalk.bgRed.black(string),
+  fatalLog: string => chalk.bgRed.yellow(string),
+  resetLog: string => chalk.reset(string)
 }
