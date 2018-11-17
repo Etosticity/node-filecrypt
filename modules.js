@@ -67,7 +67,7 @@ module.exports = {
     console.log("encryptFolder!")
   },
   decryptFile: () => {
-    console.log("decryptFolder!")
+    console.log("decryptFile!")
   },
   decryptFolder: () => {
     console.log("decryptFolder")
@@ -93,16 +93,16 @@ module.exports = {
         return process.exit(1)
       }
 
-      if (!fs.existsSync(`${process.cwd()}/.rsakeys/`)) {
-        fs.mkdirSync(`${process.cwd()}/.rsakeys/`)
+      if (!fs.existsSync(`${__dirname}/.rsakeys/`)) {
+        fs.mkdirSync(`${__dirname}/.rsakeys/`)
       }
 
       console.log(macros.infoLog('Generating New Key Pair Now. It might take awhile.'))
 
       const key = new nodeRSA().generateKeyPair(4096)
 
-      fs.writeFileSync(`${process.cwd()}/.rsakeys/public.txt`, key.exportKey('public'), 'utf8')
-      fs.writeFileSync(`${process.cwd()}/.rsakeys/private.txt`, key.exportKey('private'), 'utf8')
+      fs.writeFileSync(`${__dirname}/.rsakeys/public.txt`, key.exportKey('public'), 'utf8')
+      fs.writeFileSync(`${__dirname}/.rsakeys/private.txt`, key.exportKey('private'), 'utf8')
 
       return console.log(macros.infoLog('✔\x20Success! New Key Pairs Have Been Generated!'))
     }).catch(err => {

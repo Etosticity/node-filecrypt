@@ -4,7 +4,7 @@
   "description": "Encrypt files using RSA Encryption",
   "main": "main.js",
   "scripts": {
-    "clean": "rm -rf ./.rsakeys"
+    "clean": "rm -rf ./.rsakeys *.enc"
   },
   "repository": {
     "type": "git",
