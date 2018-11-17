@@ -28,7 +28,7 @@ module.exports = {
           return `${__dirname}/.rsakeys/`
         },
         validate: value => {
-          if (value === null || value === '') return 'Unable to proceed, file location needed!'
+          if (value === null || value === '') return 'Error: Key Pair Location Required!'
           if (!fs.existsSync(`${value}/public.txt`) || !fs.existsSync(`${value}/private.txt`)) return 'Error: Unable to locate signing keys!'
 
           return true
@@ -53,7 +53,7 @@ module.exports = {
       const key = new nodeRSA()
       key.importKey(keyData)
 
-      fs.writeFileSync(`${results.filename}.enc`, key.encrypt(fileData, 'binary'), 'utf8')
+      fs.writeFileSync(`${results.filename}.enc`, key.encrypt(fileData, 'base64'), 'utf8')
 
       return console.log(macros.infoLog('✔\x20Success! File Has Been Encrypted.'))
     }).catch(err => {
@@ -67,7 +67,60 @@ module.exports = {
     console.log("encryptFolder!")
   },
   decryptFile: () => {
-    console.log("decryptFile!")
+    prompter.prompt([
+      {
+        type: 'input',
+        name: 'filename',
+        message: 'Location Of File?',
+        validate: value => {
+          if (value === null || value === '') return 'Error: File Location Required!'
+          if (!fs.existsSync(value)) return 'Error: Unable to locate file!'
+
+          return true
+        }
+      },
+      {
+        type: 'input',
+        name: 'rsakeys',
+        message: 'Where Are Your Signing Keys?',
+        default: () => {
+          return `${__dirname}/.rsakeys/`
+        },
+        validate: value => {
+          if (value === null || value === '') return 'Error: Key Pair Location Required!'
+          if (!fs.existsSync(`${value}/public.txt`) || !fs.existsSync(`${value}/private.txt`)) return 'Error: Unable to locate signing keys!'
+
+          return true
+        }
+      },
+      {
+        type: 'confirm',
+        name: 'confirmation',
+        message: 'Are The Above Details Correct?',
+        default: false
+      }
+    ]).then(results => {
+      if (!results.confirmation) {
+        console.warn(macros.errorLog('❌\x20 File Decryption Aborted. No files were changed.'))
+        return process.exit(1)
+      }
+
+      console.log(macros.infoLog('Decrypting File Now. It might take awhile.'))
+
+      const fileData = fs.readFileSync(results.filename, 'utf8')
+      const keyData = fs.readFileSync(`${results.rsakeys}/private.txt`, 'utf8')
+      const key = new nodeRSA()
+      key.importKey(keyData)
+
+      fs.writeFileSync(`${results.filename}`, key.decrypt(fileData, 'utf8'), 'utf8')
+
+      return console.log(macros.infoLog('✔\x20Success! File Has Been Decrypted.'))
+    }).catch(err => {
+      console.clear()
+      console.error(macros.errorLog('[Modules:decryptFile:Error]'), macros.resetLog('An Error Occured. Please see below.'))
+      console.error(err)
+      return process.exit(1)
+    })
   },
   decryptFolder: () => {
     console.log("decryptFolder")

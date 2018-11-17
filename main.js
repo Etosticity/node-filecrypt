@@ -32,7 +32,7 @@ async function main() {
         console.log(2)
         break;
       case 'Decrypt A File':
-        console.log(3)
+        modules.decryptFile()
         break;
       case 'Decrypt A Folder':
         console.log(4)

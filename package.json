@@ -12,7 +12,9 @@
   },
   "keywords": [
     "encryption",
-    "rsa"
+    "rsa",
+    "nodejs",
+    "node-rsa"
   ],
   "author": "Etosticity Rammington (etosticity@gmail.com)",
   "license": "GPL-3.0",
