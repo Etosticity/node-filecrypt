@@ -6,6 +6,44 @@ const fs = require('fs')
 
 const macros = require('./macros')
 
+function encrypt(results) {
+  try {
+    const fileData = fs.readFileSync(results.filename, 'utf8')
+    const keyData = fs.readFileSync(`${results.rsakeys}/public.txt`, 'utf8')
+    const start = new Date()
+    const key = new nodeRSA()
+    key.importKey(keyData)
+
+    fs.writeFileSync(`${results.filename}`, key.encrypt(fileData, 'base64'), 'utf8')
+
+    return console.log(macros.infoLog(`✔\x20Success! File Has Been Encrypted. Took ${new Date() - start}ms`))
+  } catch (err) {
+    console.clear()
+    console.error(macros.errorLog('[Modules:encryptFile:encrypt:Error]'), macros.resetLog('An Error Occured. Please see below.'))
+    console.error(err)
+    return process.exit(1)
+  }
+}
+
+function decrypt(results) {
+  try {
+    const fileData = fs.readFileSync(results.filename, 'utf8')
+    const keyData = fs.readFileSync(`${results.rsakeys}/private.txt`, 'utf8')
+    const start = new Date()
+    const key = new nodeRSA()
+    key.importKey(keyData)
+
+    fs.writeFileSync(`${results.filename}`, key.decrypt(fileData, 'utf8'), 'utf8')
+
+    return console.log(macros.infoLog(`✔\x20Success! File Has Been Decrypted. Took ${new Date() - start}ms`))
+  } catch (err) {
+    console.clear()
+    console.error(macros.errorLog('[Modules:decryptFile:decrypt:Error]'), macros.resetLog('An Error Occured. Please see below.'))
+    console.error(err)
+    return process.exit(1)
+  }
+}
+
 module.exports = {
   encryptFile: () => {
     prompter.prompt([
@@ -48,15 +86,7 @@ module.exports = {
 
       console.log(macros.infoLog('Encrypting File Now. It might take awhile.'))
 
-      const fileData = fs.readFileSync(results.filename, 'utf8')
-      const keyData = fs.readFileSync(`${results.rsakeys}/public.txt`, 'utf8')
-      const start = new Date()
-      const key = new nodeRSA()
-      key.importKey(keyData)
-
-      fs.writeFileSync(`${results.filename}.enc`, key.encrypt(fileData, 'base64'), 'utf8')
-
-      return console.log(macros.infoLog(`✔\x20Success! File Has Been Encrypted. Took ${new Date() - start}ms`))
+      return encrypt(results)
     }).catch(err => {
       console.clear()
       console.error(macros.errorLog('[Modules:encryptFile:Error]'), macros.resetLog('An Error Occured. Please see below.'))
@@ -108,15 +138,7 @@ module.exports = {
 
       console.log(macros.infoLog('Decrypting File Now. It might take awhile.'))
 
-      const fileData = fs.readFileSync(results.filename, 'utf8')
-      const keyData = fs.readFileSync(`${results.rsakeys}/private.txt`, 'utf8')
-      const start = new Date()
-      const key = new nodeRSA()
-      key.importKey(keyData)
-
-      fs.writeFileSync(`${results.filename}`, key.decrypt(fileData, 'utf8'), 'utf8')
-
-      return console.log(macros.infoLog(`✔\x20Success! File Has Been Decrypted. Took ${new Date() - start}ms`))
+      return decrypt(results)
     }).catch(err => {
       console.clear()
       console.error(macros.errorLog('[Modules:decryptFile:Error]'), macros.resetLog('An Error Occured. Please see below.'))
