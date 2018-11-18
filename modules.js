@@ -6,15 +6,15 @@ const fs = require('fs')
 
 const macros = require('./macros')
 
-function encrypt(results) {
+function encrypt(filename, keylocation) {
   try {
-    const fileData = fs.readFileSync(results.filename, 'utf8')
-    const keyData = fs.readFileSync(`${results.rsakeys}/public.txt`, 'utf8')
+    const fileData = fs.readFileSync(filename, 'utf8')
+    const keyData = fs.readFileSync(`${keylocation}/public.txt`, 'utf8')
     const start = new Date()
     const key = new nodeRSA()
     key.importKey(keyData)
 
-    fs.writeFileSync(`${results.filename}`, key.encrypt(fileData, 'base64'), 'utf8')
+    fs.writeFileSync(`${filename}`, key.encrypt(fileData, 'base64'), 'utf8')
 
     return console.log(macros.infoLog(`✔\x20Success! File Has Been Encrypted. Took ${new Date() - start}ms`))
   } catch (err) {
@@ -25,15 +25,15 @@ function encrypt(results) {
   }
 }
 
-function decrypt(results) {
+function decrypt(filename, keylocation) {
   try {
-    const fileData = fs.readFileSync(results.filename, 'utf8')
-    const keyData = fs.readFileSync(`${results.rsakeys}/private.txt`, 'utf8')
+    const fileData = fs.readFileSync(filename, 'utf8')
+    const keyData = fs.readFileSync(`${keylocation}/private.txt`, 'utf8')
     const start = new Date()
     const key = new nodeRSA()
     key.importKey(keyData)
 
-    fs.writeFileSync(`${results.filename}`, key.decrypt(fileData, 'utf8'), 'utf8')
+    fs.writeFileSync(`${filename}`, key.decrypt(fileData, 'utf8'), 'utf8')
 
     return console.log(macros.infoLog(`✔\x20Success! File Has Been Decrypted. Took ${new Date() - start}ms`))
   } catch (err) {
@@ -86,7 +86,7 @@ module.exports = {
 
       console.log(macros.infoLog('Encrypting File Now. It might take awhile.'))
 
-      return encrypt(results)
+      return encrypt(results.filename, results.rsakeys)
     }).catch(err => {
       console.clear()
       console.error(macros.errorLog('[Modules:encryptFile:Error]'), macros.resetLog('An Error Occured. Please see below.'))
@@ -138,7 +138,7 @@ module.exports = {
 
       console.log(macros.infoLog('Decrypting File Now. It might take awhile.'))
 
-      return decrypt(results)
+      return decrypt(results.filename, results.rsakeys)
     }).catch(err => {
       console.clear()
       console.error(macros.errorLog('[Modules:decryptFile:Error]'), macros.resetLog('An Error Occured. Please see below.'))
