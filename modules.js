@@ -50,12 +50,13 @@ module.exports = {
 
       const fileData = fs.readFileSync(results.filename, 'utf8')
       const keyData = fs.readFileSync(`${results.rsakeys}/public.txt`, 'utf8')
+      const start = new Date()
       const key = new nodeRSA()
       key.importKey(keyData)
 
       fs.writeFileSync(`${results.filename}.enc`, key.encrypt(fileData, 'base64'), 'utf8')
 
-      return console.log(macros.infoLog('✔\x20Success! File Has Been Encrypted.'))
+      return console.log(macros.infoLog(`✔\x20Success! File Has Been Encrypted. Took ${new Date() - start}ms`))
     }).catch(err => {
       console.clear()
       console.error(macros.errorLog('[Modules:encryptFile:Error]'), macros.resetLog('An Error Occured. Please see below.'))
@@ -109,12 +110,13 @@ module.exports = {
 
       const fileData = fs.readFileSync(results.filename, 'utf8')
       const keyData = fs.readFileSync(`${results.rsakeys}/private.txt`, 'utf8')
+      const start = new Date()
       const key = new nodeRSA()
       key.importKey(keyData)
 
       fs.writeFileSync(`${results.filename}`, key.decrypt(fileData, 'utf8'), 'utf8')
 
-      return console.log(macros.infoLog('✔\x20Success! File Has Been Decrypted.'))
+      return console.log(macros.infoLog(`✔\x20Success! File Has Been Decrypted. Took ${new Date() - start}ms`))
     }).catch(err => {
       console.clear()
       console.error(macros.errorLog('[Modules:decryptFile:Error]'), macros.resetLog('An Error Occured. Please see below.'))
@@ -152,12 +154,13 @@ module.exports = {
 
       console.log(macros.infoLog('Generating New Key Pair Now. It might take awhile.'))
 
+      const start = new Date()
       const key = new nodeRSA().generateKeyPair(4096)
 
       fs.writeFileSync(`${__dirname}/.rsakeys/public.txt`, key.exportKey('public'), 'utf8')
       fs.writeFileSync(`${__dirname}/.rsakeys/private.txt`, key.exportKey('private'), 'utf8')
 
-      return console.log(macros.infoLog('✔\x20Success! New Key Pairs Have Been Generated!'))
+      return console.log(macros.infoLog(`✔\x20Success! New Key Pairs Have Been Generated! Took ${new Date() - start}ms`))
     }).catch(err => {
       console.clear()
       console.error(macros.errorLog('[Modules:generateKeys:Error]'), macros.resetLog('An Error Occured. Please see below.'))
