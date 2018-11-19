@@ -15,9 +15,7 @@ async function main() {
       message: 'What To Do?',
       choices: [
         'Encrypt A File',
-        'Encrypt A Folder',
         'Decrypt A File',
-        'Decrypt A Folder',
         new prompter.Separator(),
         'Export Current Key Pair',
         'Generate A New Key Pair',
@@ -28,14 +26,8 @@ async function main() {
       case 'Encrypt A File':
         modules.encryptFile()
         break;
-      case 'Encrypt A Folder':
-        console.log('Feature Coming Soon!')
-        break;
       case 'Decrypt A File':
         modules.decryptFile()
-        break;
-      case 'Decrypt A Folder':
-        console.log('Feature Coming Soon!')
         break;
       case 'Export Current Key Pair':
         console.log('Feature Coming Soon!')

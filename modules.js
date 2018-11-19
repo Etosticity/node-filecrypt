@@ -2,47 +2,10 @@
 
 const prompter = require('inquirer')
 const nodeRSA = require('node-rsa')
+const path = require('path')
 const fs = require('fs')
 
 const macros = require('./macros')
-
-function encrypt(filename, keylocation) {
-  try {
-    const fileData = fs.readFileSync(filename, 'utf8')
-    const keyData = fs.readFileSync(`${keylocation}/public.txt`, 'utf8')
-    const start = new Date()
-    const key = new nodeRSA()
-    key.importKey(keyData)
-
-    fs.writeFileSync(`${filename}`, key.encrypt(fileData, 'base64'), 'utf8')
-
-    return console.log(macros.infoLog(`✔\x20Success! File Has Been Encrypted. Took ${new Date() - start}ms`))
-  } catch (err) {
-    console.clear()
-    console.error(macros.errorLog('[Modules:encryptFile:encrypt:Error]'), macros.resetLog('An Error Occured. Please see below.'))
-    console.error(err)
-    return process.exit(1)
-  }
-}
-
-function decrypt(filename, keylocation) {
-  try {
-    const fileData = fs.readFileSync(filename, 'utf8')
-    const keyData = fs.readFileSync(`${keylocation}/private.txt`, 'utf8')
-    const start = new Date()
-    const key = new nodeRSA()
-    key.importKey(keyData)
-
-    fs.writeFileSync(`${filename}`, key.decrypt(fileData, 'utf8'), 'utf8')
-
-    return console.log(macros.infoLog(`✔\x20Success! File Has Been Decrypted. Took ${new Date() - start}ms`))
-  } catch (err) {
-    console.clear()
-    console.error(macros.errorLog('[Modules:decryptFile:decrypt:Error]'), macros.resetLog('An Error Occured. Please see below.'))
-    console.error(err)
-    return process.exit(1)
-  }
-}
 
 module.exports = {
   encryptFile: () => {
@@ -52,8 +15,9 @@ module.exports = {
         name: 'filename',
         message: 'Location Of File?',
         validate: value => {
-          if (value === null || value === '') return 'Error: File Location Required!'
+          if (value === null || value === '') return 'Error: File location required!'
           if (!fs.existsSync(value)) return 'Error: Unable to locate file!'
+          if (fs.statSync(value).isDirectory()) return 'Error: Unable to encrypt folders!'
 
           return true
         }
@@ -63,7 +27,7 @@ module.exports = {
         name: 'rsakeys',
         message: 'Where Are Your Signing Keys?',
         default: () => {
-          return `${__dirname}/.rsakeys/`
+          return path.join(__dirname, '.rsakeys')
         },
         validate: value => {
           if (value === null || value === '') return 'Error: Key Pair Location Required!'
@@ -75,7 +39,7 @@ module.exports = {
       {
         type: 'confirm',
         name: 'confirmation',
-        message: 'Are The Above Details Correct?',
+        message: 'Are The Details Correct?',
         default: false
       }
     ]).then(results => {
@@ -86,16 +50,21 @@ module.exports = {
 
       console.log(macros.infoLog('Encrypting File Now. It might take awhile.'))
 
-      return encrypt(results.filename, results.rsakeys)
+      const fileData = fs.readFileSync(results.filename, 'utf8')
+      const keyData = fs.readFileSync(`${results.rsakeys}/public.txt`, 'utf8')
+      const start = new Date()
+      const key = new nodeRSA()
+      key.importKey(keyData)
+
+      fs.writeFileSync(`${results.filename}`, key.encrypt(fileData, 'base64'), 'utf8')
+
+      return console.log(macros.infoLog(`✔\x20Success! File Has Been Encrypted. Took ${new Date() - start}ms`))
     }).catch(err => {
       console.clear()
       console.error(macros.errorLog('[Modules:encryptFile:Error]'), macros.resetLog('An Error Occured. Please see below.'))
       console.error(err)
       return process.exit(1)
     })
-  },
-  encryptFolder: () => {
-    console.log("encryptFolder!")
   },
   decryptFile: () => {
     prompter.prompt([
@@ -104,8 +73,9 @@ module.exports = {
         name: 'filename',
         message: 'Location Of File?',
         validate: value => {
-          if (value === null || value === '') return 'Error: File Location Required!'
+          if (value === null || value === '') return 'Error: File location required!'
           if (!fs.existsSync(value)) return 'Error: Unable to locate file!'
+          if (fs.statSync(value).isDirectory()) return 'Error: Unable to decrypt folders!'
 
           return true
         }
@@ -115,7 +85,7 @@ module.exports = {
         name: 'rsakeys',
         message: 'Where Are Your Signing Keys?',
         default: () => {
-          return `${__dirname}/.rsakeys/`
+          return path.join(__dirname, '.rsakeys')
         },
         validate: value => {
           if (value === null || value === '') return 'Error: Key Pair Location Required!'
@@ -127,7 +97,7 @@ module.exports = {
       {
         type: 'confirm',
         name: 'confirmation',
-        message: 'Are The Above Details Correct?',
+        message: 'Are The Details Correct?',
         default: false
       }
     ]).then(results => {
@@ -138,16 +108,21 @@ module.exports = {
 
       console.log(macros.infoLog('Decrypting File Now. It might take awhile.'))
 
-      return decrypt(results.filename, results.rsakeys)
+      const fileData = fs.readFileSync(results.filename, 'utf8')
+      const keyData = fs.readFileSync(`${results.rsakeys}/private.txt`, 'utf8')
+      const start = new Date()
+      const key = new nodeRSA()
+      key.importKey(keyData)
+
+      fs.writeFileSync(`${results.filename}`, key.decrypt(fileData, 'utf8'), 'utf8')
+
+      return console.log(macros.infoLog(`✔\x20Success! File Has Been Decrypted. Took ${new Date() - start}ms`))
     }).catch(err => {
       console.clear()
       console.error(macros.errorLog('[Modules:decryptFile:Error]'), macros.resetLog('An Error Occured. Please see below.'))
       console.error(err)
       return process.exit(1)
     })
-  },
-  decryptFolder: () => {
-    console.log("decryptFolder")
   },
   exportKeys: () => {
     console.log("exportKeys!")
