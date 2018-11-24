@@ -1,14 +1,50 @@
 'use strict'
 
+// Libraries
 const prompter = require('inquirer')
+const minimist = require('minimist')(process.argv.slice(2))
+
+// GUI Libraries
+const url = require('url')
+const path = require('path')
+const { app, BrowserWindow } = require('electron')
+
+// Package Libraries
+const macros = require('./macros')
 const modules = require('./modules')
 
-const macros = require('./macros')
+// GUI Variables
+let mainWindow
 
-async function main() {
+function createWindow() {
+  // Create new window
+  mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+    resizable: false,
+    autoHideMenuBar: true,
+  })
+
+  // Load page into window
+  mainWindow.loadURL(url.format({
+    pathname: path.join(__dirname, 'pages/mainWindow.html'),
+    protocol: 'file:',
+    slashes: true
+  }))
+
+  // Quit application when closed
+  mainWindow.on('closed', () => {
+    // Dereference mainWindow object
+    // to reduce memory footprint
+    mainWindow = null
+  })
+}
+
+function main() {
+  // Clear terminal for nicer output
   console.clear()
 
-  await prompter.prompt([
+  prompter.prompt([
     {
       type: 'list',
       name: 'selection',
@@ -42,4 +78,23 @@ async function main() {
   })
 }
 
-main()
+if (minimist.console) return main()
+
+// Create the mainWindow when Electron
+// has finished initializing
+// app.on('ready', createWindow)
+app.on('ready', createWindow)
+
+// Quit the application when all
+// windows are closed
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') app.quit()
+})
+
+// Re-create the mainWindow when dock
+// icon is clicked and there are no
+// active windows open
+app.on('activate', () => {
+  // Re-initialize mainWindow
+  if (win === null) createWindow()
+})

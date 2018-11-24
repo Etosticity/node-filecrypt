@@ -1,10 +1,11 @@
 {
   "name": "filecrypt",
-  "version": "v0.3.7-beta",
+  "version": "v0.4.0-beta",
   "description": "Encrypt files using RSA Encryption",
   "main": "main.js",
   "scripts": {
-    "clean": "rm -rf ./.rsakeys *.enc"
+    "clean": "rm -rf ./.rsakeys *.enc",
+    "start": "electron main.js"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,10 @@
   "dependencies": {
     "chalk": "^2.4.1",
     "inquirer": "^6.2.0",
+    "minimist": "^1.2.0",
     "node-rsa": "^1.0.1"
+  },
+  "devDependencies": {
+    "electron": "^3.0.10"
   }
 }
