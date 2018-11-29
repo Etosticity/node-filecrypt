@@ -1,14 +1,17 @@
 'use strict'
 
+// Libraries
 const prompter = require('inquirer')
+
+// Package Libraries
+const macros = require('./macros')
 const modules = require('./modules')
 
-const macros = require('./macros')
-
-async function main() {
+function main() {
+  // Clear terminal for nicer output
   console.clear()
 
-  await prompter.prompt([
+  prompter.prompt([
     {
       type: 'list',
       name: 'selection',
@@ -41,5 +44,3 @@ async function main() {
     }
   })
 }
-
-main()

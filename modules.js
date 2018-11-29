@@ -1,13 +1,16 @@
 'use strict'
 
+// Libraries
 const prompter = require('inquirer')
 const nodeRSA = require('node-rsa')
 const path = require('path')
 const fs = require('fs')
 
+// Package Libraries
 const macros = require('./macros')
 
 module.exports = {
+  // Encrypt Files
   encryptFile: () => {
     prompter.prompt([
       {
@@ -66,6 +69,7 @@ module.exports = {
       return process.exit(1)
     })
   },
+  // Decrypt Files
   decryptFile: () => {
     prompter.prompt([
       {
@@ -124,9 +128,11 @@ module.exports = {
       return process.exit(1)
     })
   },
+  // Export Keys
   exportKeys: () => {
     console.log("exportKeys!")
   },
+  // Generate New RSA Key Pairs
   generateKeys: () => {
     console.warn(macros.warnLog('! Warning! Generating New Key Pairs Will Result In Old Ones Being Erased!'))
     console.warn(macros.warnLog('! Advice To Export Key Pair Before Continuing!'))

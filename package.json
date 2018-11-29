@@ -1,10 +1,11 @@
 {
   "name": "filecrypt",
-  "version": "v0.3.7-beta",
+  "version": "v0.4.1-beta",
   "description": "Encrypt files using RSA Encryption",
   "main": "main.js",
   "scripts": {
-    "clean": "rm -rf ./.rsakeys *.enc"
+    "clean": "rm -rf ./.rsakeys *.enc",
+    "update": "npm update"
   },
   "repository": {
     "type": "git",
@@ -23,8 +24,11 @@
   },
   "homepage": "https://github.com/Etosticity/node-filecrypt#readme",
   "dependencies": {
+    "bulma": "^0.7.2",
     "chalk": "^2.4.1",
     "inquirer": "^6.2.0",
+    "minimist": "^1.2.0",
     "node-rsa": "^1.0.1"
-  }
+  },
+  "devDependencies": {}
 }
