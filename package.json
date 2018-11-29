@@ -1,11 +1,12 @@
 {
   "name": "filecrypt",
-  "version": "v0.4.1-beta",
+  "version": "v0.4.2-beta",
   "description": "Encrypt files using RSA Encryption",
   "main": "main.js",
   "scripts": {
-    "clean": "rm -rf ./.rsakeys *.enc",
-    "update": "npm update"
+    "update": "npm update",
+    "start": "node main.js",
+    "clean": "rm -rf ./.rsakeys *.enc"
   },
   "repository": {
     "type": "git",
