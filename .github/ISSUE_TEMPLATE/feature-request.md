@@ -1,7 +1,6 @@
 ---
 name: Feature Request
 about: Request a feature for node-filecrypt
-labels: 
 
 ---
 

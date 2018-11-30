@@ -1,7 +1,6 @@
 ---
 name: Bug Report
 about: Report incorrect or unexpected behaviour of node-filecrypt
-labels: 
 
 ---
 
@@ -25,7 +24,7 @@ Clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Additional Information (Please fill in the following):**
- - node-filecrypt Version: [Open version.txt]
+ - node-filecrypt Version: [Open package.json]
  - NodeJS Version: [Run `node --version`]
  - Operating System: [Windows / MacOS / Linux]
  - Priority: [Low / Medium / High]
