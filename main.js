@@ -44,3 +44,5 @@ function main() {
     }
   })
 }
+
+main()
