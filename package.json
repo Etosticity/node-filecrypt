@@ -1,6 +1,6 @@
 {
   "name": "filecrypt",
-  "version": "v0.4.3-beta",
+  "version": "v0.4.5-beta",
   "description": "Encrypt files using RSA Encryption",
   "main": "main.js",
   "scripts": {

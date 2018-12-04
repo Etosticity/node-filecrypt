@@ -20,7 +20,6 @@ function main() {
         'Encrypt A File',
         'Decrypt A File',
         new prompter.Separator(),
-        'Export Current Key Pair',
         'Generate A New Key Pair',
       ]
     }
@@ -32,14 +31,11 @@ function main() {
       case 'Decrypt A File':
         modules.decryptFile()
         break;
-      case 'Export Current Key Pair':
-        console.log('Feature Coming Soon!')
-        break;
       case 'Generate A New Key Pair':
         modules.generateKeys()
         break;
       default:
-        macros.errorLog('Invalid Selection! Program Exited.')
+        console.error(macros.errorLog('Invalid Selection! Program Exited.'))
         process.exit(1)
     }
   })
