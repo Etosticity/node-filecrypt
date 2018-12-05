@@ -147,9 +147,7 @@ module.exports = {
         return process.exit(1)
       }
 
-      if (!fs.existsSync(path.join(__dirname, '.rsakeys'))) {
-        fs.mkdirSync(path.join(__dirname, '.rsakeys'))
-      }
+      if (!fs.existsSync(path.join(__dirname, '.rsakeys'))) fs.mkdirSync(path.join(__dirname, '.rsakeys'))
 
       console.log(macros.infoLog('Generating New Key Pair Now. It might take awhile.'))
 
